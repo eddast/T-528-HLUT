@@ -1,0 +1,28 @@
+# depslib dependency file v1.0
+1493132758 source:c:\users\edda steinunn\documents\hlutbundin c++\lab1 - toh\main.cpp
+	<iostream>
+	"toh.h"
+
+1493132036 c:\users\edda steinunn\documents\hlutbundin c++\lab1 - toh\toh.h
+	<iostream>
+	<vector>
+	<assert.h>
+
+1493132542 source:c:\users\edda steinunn\documents\hlutbundin c++\lab1 - toh\toh.cpp
+	"toh.h"
+
+1493145532 source:c:\users\edda steinunn\documents\hlutbundin c++\labs\lab1 - tower of hanoi\main.cpp
+	<iostream>
+	<fstream>
+	<stdlib.h>
+	<chrono>
+	"toh.h"
+
+1493145582 c:\users\edda steinunn\documents\hlutbundin c++\labs\lab1 - tower of hanoi\toh.h
+	<iostream>
+	<vector>
+	<assert.h>
+
+1493146713 source:c:\users\edda steinunn\documents\hlutbundin c++\labs\lab1 - tower of hanoi\toh.cpp
+	"toh.h"
+

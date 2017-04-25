@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1493044800 source:c:\users\edda steinunn\documents\hlutbundin c++\test\main.cpp
+	<iostream>
+	<fstream>
+	<vector>
+

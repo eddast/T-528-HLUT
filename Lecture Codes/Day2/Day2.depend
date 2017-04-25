@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1493120541 source:c:\users\edda steinunn\documents\hlutbundin c++\day2\main.cpp
+	<iostream>
+	<vector>
+	<chrono>
+
