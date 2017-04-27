@@ -11,6 +11,7 @@
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
+				<Option parameters="text.txt" />
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>
@@ -33,6 +34,7 @@
 			<Add option="-fexceptions" />
 		</Compiler>
 		<Unit filename="main.cpp" />
+		<Unit filename="text.txt" />
 		<Extensions>
 			<code_completion />
 			<envvars />
