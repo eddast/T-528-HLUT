@@ -1,0 +1,8 @@
+# depslib dependency file v1.0
+1493303206 source:c:\users\edda steinunn\documents\hlutbundin c++\labs\lab3 - reading lines\main.cpp
+	<iostream>
+	<fstream>
+	<sstream>
+	<string>
+	<algorithm>
+
