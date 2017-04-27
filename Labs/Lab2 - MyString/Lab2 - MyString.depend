@@ -1,0 +1,13 @@
+# depslib dependency file v1.0
+1493217966 source:c:\users\edda steinunn\documents\hlutbundin c++\labs\lab2 - mystring\main.cpp
+	<iostream>
+	"my_str.h"
+
+1493217945 source:c:\users\edda steinunn\documents\hlutbundin c++\labs\lab2 - mystring\src\my_str.cpp
+	"my_str.h"
+	<cstring>
+	<ctype.h>
+
+1493215835 c:\users\edda steinunn\documents\hlutbundin c++\labs\lab2 - mystring\include\my_str.h
+	<iostream>
+
