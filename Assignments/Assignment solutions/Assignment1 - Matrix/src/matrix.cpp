@@ -32,7 +32,10 @@ Matrix& Matrix::operator=(const Matrix& rhs)
     // Then filling data and assigning it to temp
     if ( this != &rhs ) {
         Element *tmp = new Element[rhs.num_rows_ * rhs.num_cols_];
-        tmp = rhs.data_;
+        for(int i = 0; i < (rhs.num_rows_ * rhs.num_cols_); i++)
+        {
+            tmp[i] = rhs.data_[i];
+        }
         num_rows_ = rhs.num_rows_;
         num_cols_ = rhs.num_cols_;
         delete [] data_;
@@ -57,7 +60,6 @@ Matrix::~Matrix()
 Matrix Matrix::transpose()
 {
     Matrix result(num_cols_, num_rows_);
-    std::cout << "result matrix: " << std::endl;
     std::cout << result << std::endl;
     for(int row = 0; row < num_rows_; row++)
     {
@@ -66,8 +68,9 @@ Matrix Matrix::transpose()
             int idx_data = index(row, col);
             int idx_result = index(col, row);
 
-            std::cout << "Pushing " << data_[idx_data] << " into index: " << idx_result << " in result matrix" << std::endl;
+            std::cout << "placing value " << data_[idx_data] << " into result at idx " << idx_result << std::endl;
             result.data_[idx_result] = data_[idx_data];
+            std::cout << result << std::endl;
         }
     }
 
@@ -145,8 +148,7 @@ Matrix Matrix::operator-(const Matrix& rhs) const
 Matrix Matrix::operator*(const Matrix& rhs) const
 {
     /// TODO
-    Matrix result(num_rows_, num_cols_);
-    return result;
+    return *this;
 }
 
 Matrix& Matrix::operator+=(const Matrix& rhs)
@@ -187,6 +189,7 @@ bool Matrix::operator==(const Matrix& rhs ) const
                 return false;
             }
         }
+        // If result has not been false yet, matrices are equal
         return true;
     }
 }
