@@ -1,4 +1,6 @@
 #include "matrix.h"
+#include <stdexcept>
+
 using namespace matrix;
 
 // Constructor
@@ -21,7 +23,10 @@ Matrix::Matrix(const Matrix& m) :
 {
     // Copying matrix and it's values into new matrix object
     data_ = new Element[m.num_rows_ * m.num_cols_];
-    data_ = m.data_;
+    for(int i = 0; i < (m.num_rows_ * m.num_cols_); i++)
+    {
+            data_[i] = m.data_[i];
+    }
 }
 
 // Assign operator overloading
@@ -60,19 +65,11 @@ Matrix::~Matrix()
 Matrix Matrix::transpose()
 {
     Matrix result(num_cols_, num_rows_);
-    std::cout << result << std::endl;
-    for(int row = 0; row < num_rows_; row++)
-    {
-        for(int col = 0; col < num_cols_; col++)
-        {
-            int idx_data = index(row, col);
-            int idx_result = index(col, row);
-
-            std::cout << "placing value " << data_[idx_data] << " into result at idx " << idx_result << std::endl;
-            result.data_[idx_result] = data_[idx_data];
-            std::cout << result << std::endl;
-        }
-    }
+	for (int n = 0; n < (num_rows_ * num_cols_); ++n) {
+		int i = n / num_rows_;
+		int j = n % num_rows_;
+		result.data_[n] = data_[num_cols_ * j + i];
+	}
 
     return result;
 }
@@ -147,8 +144,20 @@ Matrix Matrix::operator-(const Matrix& rhs) const
 // dot-product
 Matrix Matrix::operator*(const Matrix& rhs) const
 {
+    // Matrix' rows needs to be the same as right hand side columns
+    // and matrix' columns need to be the same size as right hand side rows
+    // for multiplication to be legal
+    if(num_rows_ != rhs.num_cols_ || num_cols_ != rhs.num_rows_)
+    {
+        throw matrix_dimensions_wrong();
+    }
+
+    // Creating a result matrix, and placing in results one by one
+    Matrix result(num_rows_, rhs.num_cols_);
+
     /// TODO
-    return *this;
+
+    return result;
 }
 
 Matrix& Matrix::operator+=(const Matrix& rhs)
@@ -199,6 +208,12 @@ bool Matrix::operator==(const Matrix& rhs ) const
 
 Element& Matrix::operator()(const int& row, const int& col)
 {
+    // Checking whether range is valid
+    if(row > num_rows_ || row < 0 ||  col > num_cols_ || col < 0 )
+    {
+        throw std::out_of_range("Invalid range");
+    }
+
     // Fetches index of specified row and column
     // Returns value at index
     int idx = index(row, col);
@@ -208,6 +223,12 @@ Element& Matrix::operator()(const int& row, const int& col)
 
 const Element& Matrix::operator()(const int& row, const int& col) const
 {
+    // Checking whether range is valid
+    if(row > num_rows_ || row < 0 ||  col > num_cols_ || col < 0 )
+    {
+        throw std::out_of_range("Invalid range");
+    }
+
     // Fetches index of specified row and column
     // Returns value at index
     int idx = index(row, col);

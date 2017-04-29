@@ -13,16 +13,17 @@ int main()
     m(1,0) = 4; m(1,1) = 5; m(1,2) = 6;
     cout << "m:" << endl;
     cout << m << endl;
-
-    Matrix m1(2, 4, 3);
-    Matrix m2(2, 3, 1);
+    Matrix mm(2, 3, 2);
+    Matrix m1(3, 3, 3);
+    Matrix m2(3, 3, 1);
     cout << "m1:" << endl;
     cout << m1 << endl;
     cout << "m2:" << endl;
     cout << m2 << endl;
 
-    m = m + m2;
-    cout << "m = m + m2" << endl;
+    cout << "m = m + 2" << endl;
+    m = m + 2;
+    cout << "m:" << endl;
     cout << m << endl;
 
     cout << "m = m + 2" << endl;
@@ -30,10 +31,24 @@ int main()
     cout << "m:" << endl;
     cout << m << endl;
 
+    cout << "m = 2 + m" << endl;
+    m = 2 + m;
+    cout << "m:" << endl;
+    cout << m << endl;
+
+
+    cout << "m = m - mm" << endl;
+    m = m - mm;
+    cout << "m:" << endl;
+    cout << m << endl;
+
     cout << "Calling m.transpose()" << endl;
     m = m.transpose();
     cout << "m:" << endl;
     cout << m << endl;
+
+    cout << "Accessing m(1,2)" << endl;
+    cout << m1(0,1) << endl;
 
 
     return 0;
