@@ -65,12 +65,18 @@ Matrix::~Matrix()
 Matrix Matrix::transpose()
 {
     Matrix result(num_cols_, num_rows_);
+
+    // Iterates through every element in array, but uses
+    // variables to detect which row and which column each iteration is in
+    // Pushes result at index n from source matrix index,
+    // corresponding to which row and column iteration is in
 	for (int n = 0; n < (num_rows_ * num_cols_); ++n) {
-		int i = n / num_rows_;
-		int j = n % num_rows_;
-		result.data_[n] = data_[num_cols_ * j + i];
+		int row_num = n / num_rows_;
+		int col_num = n % num_rows_;
+		result.data_[n] = data_[index(col_num, row_num)];
 	}
 
+	// Returns result matrix
     return result;
 }
 
@@ -162,13 +168,39 @@ Matrix Matrix::operator*(const Matrix& rhs) const
 
 Matrix& Matrix::operator+=(const Matrix& rhs)
 {
-    /// TODO
+    // Matrices need to be the same size for addition to be legal
+    // If matrices are not equal in size, an exception is thrown
+    if(num_rows_ != rhs.num_rows_ || num_cols_ != rhs.num_cols_)
+    {
+        throw matrix_dimensions_wrong();
+    }
+
+    // Changes matrix to result matrix and then returns
+    // our current matrix
+    for(int i = 0; i < (num_rows_ * num_cols_); i++)
+    {
+        data_[i] = data_[i] + rhs.data_[i];
+    }
+
     return *this;
 }
 
 Matrix& Matrix::operator-=(const Matrix& rhs)
 {
-    /// TODO
+    // Matrices need to be the same size for addition to be legal
+    // If matrices are not equal in size, an exception is thrown
+    if(num_rows_ != rhs.num_rows_ || num_cols_ != rhs.num_cols_)
+    {
+        throw matrix_dimensions_wrong();
+    }
+
+    // Changes matrix to result matrix and then returns
+    // our current matrix
+    for(int i = 0; i < (num_rows_ * num_cols_); i++)
+    {
+        data_[i] = data_[i] - rhs.data_[i];
+    }
+
     return *this;
 }
 
@@ -209,7 +241,7 @@ bool Matrix::operator==(const Matrix& rhs ) const
 Element& Matrix::operator()(const int& row, const int& col)
 {
     // Checking whether range is valid
-    if(row > num_rows_ || row < 0 ||  col > num_cols_ || col < 0 )
+    if(row >= num_rows_ || row < 0 ||  col >= num_cols_ || col < 0 )
     {
         throw std::out_of_range("Invalid range");
     }
@@ -224,7 +256,7 @@ Element& Matrix::operator()(const int& row, const int& col)
 const Element& Matrix::operator()(const int& row, const int& col) const
 {
     // Checking whether range is valid
-    if(row > num_rows_ || row < 0 ||  col > num_cols_ || col < 0 )
+    if(row >= num_rows_ || row < 0 ||  col >= num_cols_ || col < 0 )
     {
         throw std::out_of_range("Invalid range");
     }

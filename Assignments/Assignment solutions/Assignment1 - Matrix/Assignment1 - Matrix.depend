@@ -1,9 +1,10 @@
 # depslib dependency file v1.0
-1493488981 source:c:\users\edda steinunn\documents\hlutbundin c++\assignments\assignment solutions\assignment1 - matrix\main.cpp
+1493559717 source:c:\users\edda steinunn\documents\hlutbundin c++\assignments\assignment solutions\assignment1 - matrix\main.cpp
 	<iostream>
+	<stdexcept>
 	"matrix.h"
 
-1493489240 source:c:\users\edda steinunn\documents\hlutbundin c++\assignments\assignment solutions\assignment1 - matrix\src\matrix.cpp
+1493559598 source:c:\users\edda steinunn\documents\hlutbundin c++\assignments\assignment solutions\assignment1 - matrix\src\matrix.cpp
 	"matrix.h"
 	<stdexcept>
 
