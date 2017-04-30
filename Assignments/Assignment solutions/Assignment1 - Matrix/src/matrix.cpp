@@ -34,7 +34,7 @@ Matrix& Matrix::operator=(const Matrix& rhs)
 {
     // Temp variable created for the matrix (data_) as a precaution.
     // The new operator could throw an exception.
-    // Then filling data and assigning it to temp
+    // Then filling temp variable and have assign data to that
     if ( this != &rhs ) {
         Element *tmp = new Element[rhs.num_rows_ * rhs.num_cols_];
         for(int i = 0; i < (rhs.num_rows_ * rhs.num_cols_); i++)
@@ -207,7 +207,16 @@ Matrix& Matrix::operator-=(const Matrix& rhs)
 // dot-product
 Matrix& Matrix::operator*=(const Matrix& rhs)
 {
+    // Matrix' rows needs to be the same as right hand side columns
+    // and matrix' columns need to be the same size as right hand side rows
+    // for multiplication to be legal
+    if(num_rows_ != rhs.num_cols_ || num_cols_ != rhs.num_rows_)
+    {
+        throw matrix_dimensions_wrong();
+    }
+
     /// TODO
+
     return *this;
 }
 
