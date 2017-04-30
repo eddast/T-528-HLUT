@@ -70,10 +70,10 @@ Matrix Matrix::transpose()
     // variables to detect which row and which column each iteration is in
     // Pushes result at index n from source matrix index,
     // corresponding to which row and column iteration is in
-	for (int n = 0; n < (num_rows_ * num_cols_); ++n) {
-		int row_num = n / num_rows_;
-		int col_num = n % num_rows_;
-		result.data_[n] = data_[index(col_num, row_num)];
+	for (int n = 0; n < (num_rows_ * num_cols_); n++) {
+		int row_idx = n / num_rows_;
+		int col_idx = n % num_rows_;
+		result.data_[n] = data_[index(col_idx, row_idx)];
 	}
 
 	// Returns result matrix
@@ -153,7 +153,7 @@ Matrix Matrix::operator*(const Matrix& rhs) const
     // Matrix' rows needs to be the same as right hand side columns
     // and matrix' columns need to be the same size as right hand side rows
     // for multiplication to be legal
-    if(num_rows_ != rhs.num_cols_ || num_cols_ != rhs.num_rows_)
+    if(num_rows_ != rhs.num_cols_ && num_cols_ != rhs.num_rows_)
     {
         throw matrix_dimensions_wrong();
     }
@@ -161,7 +161,17 @@ Matrix Matrix::operator*(const Matrix& rhs) const
     // Creating a result matrix, and placing in results one by one
     Matrix result(num_rows_, rhs.num_cols_);
 
-    /// TODO
+    for (int n = 0; n < num_rows_; n++) {
+        for(int m = 0; m < rhs.num_cols_; m++)
+        {
+            int sum = 0;
+            for(int w = 0; w < rhs.num_rows_; w++)
+            {
+                sum += data_[index(n, w)] * rhs.data_[rhs.index(w, m)];
+            }
+            result.data_[result.index(n,m)] = sum;
+        }
+	}
 
     return result;
 }
@@ -214,8 +224,20 @@ Matrix& Matrix::operator*=(const Matrix& rhs)
     {
         throw matrix_dimensions_wrong();
     }
+    Matrix matrix (num_rows_, rhs.num_cols_);
 
-    /// TODO
+    for (int n = 0; n < num_rows_; n++) {
+        for(int m = 0; m < rhs.num_cols_; m++)
+        {
+            int sum = 0;
+            for(int w = 0; w < rhs.num_rows_; w++)
+            {
+                sum += data_[index(n, w)] * rhs.data_[rhs.index(w, m)];
+            }
+            matrix.data_[matrix.index(n,m)] = sum;
+        }
+	}
+    *this = matrix;
 
     return *this;
 }

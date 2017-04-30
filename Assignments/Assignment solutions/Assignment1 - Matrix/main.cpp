@@ -161,6 +161,27 @@ int main()
     cout << "m's number of rows: " << m.get_num_rows() << endl;
     cout << "m's number of columns: " << m.get_num_cols() << endl;
 
+    cout << "m1 *= m2" << endl;
+    m1 *= m2;
+    cout << "m1:" << endl;
+    cout << m1 << endl;
+
+    Matrix test_mult3(9,7,2);
+    Matrix test_mult4(7,9,2);
+    cout << "test_mult3 *= test_mult4" << endl;
+    test_mult3 *= test_mult4;
+    cout << "test_mult3:" << endl;
+    cout << test_mult3 << endl;
+
+    Matrix n(2,3,1);
+    cout << "m:" << endl;
+    cout << m << endl;
+    cout << "n:" << endl;
+    cout << n << endl;
+    cout << "Test m *= n" << endl;
+    m *= n;
+    cout << "m:" << endl;
+    cout << m << endl;
 
     return 0;
 }
