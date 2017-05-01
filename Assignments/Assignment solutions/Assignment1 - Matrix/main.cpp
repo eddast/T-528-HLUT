@@ -17,7 +17,7 @@ void Interface();
 void main_menu(string input, vector<string> airports, Matrix flights);
 
 // "Logic"
-void count_connecting_flights(string source, string dest, string max_connect, Matrix flights, vector<string> airports);
+Matrix count_connecting_flights(string source, string dest, string max_connect, Matrix flights, vector<string> airports);
 bool check_airport_exist(string airport, vector<string> airports);
 Matrix istream_to_matrix( istream &in , vector<string> &airports );
 
@@ -26,7 +26,7 @@ Matrix istream_to_matrix( istream &in , vector<string> &airports );
 int main(int argc, char *argv[])
 {
     // One command line argument needs to be specified
-    if(argc > 1)
+    if(argc == 2)
     {
         // Read in flight information from file
         string line;
@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
         else
         {
             // No access to file = program terminates
-            cout << "Unable to access flight information" << endl;
+            cout << "Unable to access flight information provided" << endl;
             cout << "Program TERMINATING" << endl;
         }
         // Closes file if it's open
@@ -126,7 +126,7 @@ void Interface()
 }
 
 // Counts number of connecting flights
-void count_connecting_flights(string source, string dest, string max_connect, Matrix flights, vector<string> airports)
+Matrix count_connecting_flights(string source, string dest, string max_connect, Matrix flights, vector<string> airports)
 {
     int max_conn;
     max_conn = atoi(max_connect.c_str());
@@ -136,23 +136,17 @@ void count_connecting_flights(string source, string dest, string max_connect, Ma
 
     for(unsigned int i = 0; i < airports.size(); i++)
     {
-        if(airports[i] == source)
-        {
-            source_idx = i;
-        }
-        if(airports[i] == dest)
-        {
-            dest_idx = i;
-        }
+        if(airports[i] == source){source_idx = i; }
+        if(airports[i] == dest){dest_idx = i; }
     }
 
-    cout << flights << endl;
-    cout << "reading (" << source_idx << "," << dest_idx << ")" << endl;
-    cout << flights(source_idx, dest_idx) << " results found" << endl << endl;
+    cout << flights(dest_idx, source_idx) << " results found" << endl << endl;
     cout << "From airport: " << source << endl;
     cout << "To airport: " << dest << endl;
-    cout << "With a max " << max_conn << " connecting flights" << endl;
+    cout << "Maximum connecting flights: " << max_conn << endl;
     cout << endl;
+
+    return flights;
 }
 
 // Checks if airport specified exists
