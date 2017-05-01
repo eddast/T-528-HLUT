@@ -255,20 +255,17 @@ bool Matrix::operator==(const Matrix& rhs ) const
             return false;
         }
     }
-    else
+    // Checking if each element is the same
+    // Returning false if any element is not equal
+    for(int i = 0; i < (num_rows_ * num_cols_) ; i++)
     {
-        // Checking if each element is the same
-        // Returning false if any element is not equal
-        for(int i = 0; i < (num_rows_ * num_cols_) ; i++)
+        if(data_[i] != rhs.data_[i])
         {
-            if(data_[i] != rhs.data_[i])
-            {
-                return false;
-            }
+            return false;
         }
-        // If result has not been false yet, matrices are equal
-        return true;
     }
+    // If result has not been false yet, matrices are equal
+    return true;
 }
 
 

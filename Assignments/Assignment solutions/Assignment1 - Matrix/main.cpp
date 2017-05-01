@@ -1,26 +1,22 @@
 #include <iostream>
 #include <string>
+#include <vector>
 #include <stdlib.h>
 #include <sstream>
 #include <fstream>
-#include <vector>
-#include <stdexcept>
 #include "matrix.h"
 
 using namespace matrix;
 using namespace std;
 
-// Function declarations: implementation below
-
-// "Interface"
+// "Interface" function declarations
 void Interface();
 void main_menu(string input, vector<string> airports, Matrix flights);
 
-// "Logic"
+// "Logic" function declarations
 Matrix count_connecting_flights(string source, string dest, string max_connect, Matrix flights, vector<string> airports);
 bool check_airport_exist(string airport, vector<string> airports);
 Matrix istream_to_matrix( istream &in , vector<string> &airports );
-
 
 
 int main(int argc, char *argv[])
@@ -48,6 +44,7 @@ int main(int argc, char *argv[])
             // Loops functionality of program
             main_menu(input, airports, flights);
         }
+        // Program terminates without a valid file
         else
         {
             // No access to file = program terminates
@@ -58,6 +55,28 @@ int main(int argc, char *argv[])
         if(flight_info.is_open())
         {
             flight_info.close();
+        }
+    }
+    // If user provides an optional second argument
+    // adjacency matrix is outputted to file
+    else if(argc == 3)
+    {
+        // Read in flight information from file
+        string line;
+        ifstream flight_info(argv[1]);
+        // Action taken if flight information can be accessed
+        if (flight_info.is_open())
+        {
+            vector<string> airports;
+            Matrix flights = istream_to_matrix(flight_info, airports);
+            cout << "Adjacency matrix outputted to specified file" << endl;
+
+        }
+        else
+        {
+            // No access to file = program terminates
+            cout << "Unable to access flight information provided" << endl;
+            cout << "Program TERMINATING" << endl;
         }
     }
     else
@@ -148,8 +167,17 @@ Matrix count_connecting_flights(string source, string dest, string max_connect, 
     }
 
     // Calculating result matrix based on max_conn value
-    /// TODO
+    // temp_matrix calculates the multiplication
+    // results calculates addition accordingly
     Matrix result = flights;
+    Matrix temp_matrix = flights;
+	for (int i = 0; i < max_conn; i++) {
+        for (int j = i; j < max_conn; j++) {
+            temp_matrix *= temp_matrix;
+        }
+        result += temp_matrix;
+        temp_matrix = flights;
+    }
 
     // Displaying result
     cout << result(dest_idx, source_idx) << " results found" << endl << endl;
@@ -194,7 +222,8 @@ void main_menu(string input, vector<string> airports, Matrix flights)
         {
             cout << endl;
 
-            // Airport names need to exists to check flights
+            // Airport names need to exists in file to check flights
+            // If they do actions are taken
             if(check_airport_exist(input_args[0], airports) && check_airport_exist(input_args[1], airports))
             {
                 count_connecting_flights(input_args[0], input_args[1], input_args[2], flights, airports);
@@ -216,6 +245,6 @@ void main_menu(string input, vector<string> airports, Matrix flights)
         getline(cin, input);
     }
 
-    // Outputs if user wants to quit program
+    // Outputs this beautiful farewell message if user wants to quit
     cout << "M'kay, bye bye then :-(" << endl;
 }
