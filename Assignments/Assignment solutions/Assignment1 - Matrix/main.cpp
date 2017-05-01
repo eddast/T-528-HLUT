@@ -1,187 +1,197 @@
 #include <iostream>
+#include <string>
+#include <stdlib.h>
+#include <sstream>
+#include <fstream>
+#include <vector>
 #include <stdexcept>
 #include "matrix.h"
 
 using namespace matrix;
 using namespace std;
 
-int main()
+// Function declarations: implementation below
+
+// "Interface"
+void Interface();
+void main_menu(string input, vector<string> airports, Matrix flights);
+
+// "Logic"
+void count_connecting_flights(string source, string dest, string max_connect, Matrix flights);
+bool check_airport_exist(string airport, vector<string> airports);
+Matrix istream_to_matrix( istream &in , vector<string> &airports );
+
+
+
+int main(int argc, char *argv[])
 {
-    cout << "m initialized " << endl;
-    Matrix m(2, 3);
-    cout << "m assigned values " << endl;
-    m(0,0) = 1; m(0,1) = 2; m(0,2) = 3;
-    m(1,0) = 4; m(1,1) = 5; m(1,2) = 6;
-
-
-    cout << "m:" << endl;
-    cout << m << endl;
-
-    cout << "Fetching m(0,0) element" << endl;
-    cout << "m(0,0): " << m(0,0) << endl;
-    cout << "Fetching m(0,1) element" << endl;
-    cout << "m(0,1): " << m(0,1) << endl;
-    cout << "Fetching m(0,2) element" << endl;
-    cout << "m(0,2): " << m(0,2) << endl;
-    cout << "Fetching m(1,0) element" << endl;
-    cout << "m(1,0): " << m(1,0) << endl;
-    cout << "Fetching m(1,1) element" << endl;
-    cout << "m(1,1): " << m(1,1) << endl;
-    cout << "Fetching m(1,2) element" << endl;
-    cout << "m(1,2): " << m(1,2) << endl;
-    cout << "Fetching m(1,3) element" << endl;
-    cout << "m(1,3): ";
-
-    try
+    // One command line argument needs to be specified
+    if(argc > 1)
     {
-        cout << m(1,3) << endl;
+        // Read in flight information from file
+        string line;
+        ifstream flight_info(argv[1]);
+        // Action taken if flight information can be accessed
+        if (flight_info.is_open())
+        {
+            vector<string> airports;
+            Matrix flights = istream_to_matrix(flight_info, airports);
+
+            // Displays initial menu
+            Interface();
+
+            // Gets initial input
+            string input;
+            cout << "> ";
+            getline(cin, input);
+
+            // Loops functionality of program
+            main_menu(input, airports, flights);
+        }
+        else
+        {
+            // No access to file = program terminates
+            cout << "Unable to access flight information" << endl;
+            cout << "Program TERMINATING" << endl;
+        }
+        // Closes file if it's open
+        if(flight_info.is_open())
+        {
+            flight_info.close();
+        }
     }
-    catch(std::out_of_range outofrange)
+    else
     {
-        cout << "Failed: " << outofrange.what() << endl;
+        // Program terminates if no command line is specified
+        cout << "Command line argument must be specified!" << endl;
+        cout << "Program TERMINATING" << endl;
     }
-    try
-    {
-        cout << "Fetching m(2,0) element" << endl;
-        cout << "m(2,0): " << m(2,0) << endl;
-    }
-    catch(std::out_of_range outofrange)
-    {
-        cout << "Failed: " << outofrange.what() << endl;
-    }
-    try
-    {
-        cout << "Fetching m(1,4) element" << endl;
-        cout << "m(1,4): " << m(1,4) << endl;
-    }
-    catch(std::out_of_range outofrange)
-    {
-        cout << "Failed: " << outofrange.what() << endl;
-    }
-    try
-    {
-        cout << "Fetching m(3,0) element" << endl;
-        cout << "m(3,0): " << m(3,0) << endl;
-    }
-    catch(std::out_of_range outofrange)
-    {
-        cout << "Failed: " << outofrange.what() << endl;
-    }
-
-    Matrix mm(2, 3, 2);
-    Matrix m1(3, 3, 3);
-    Matrix m2(3, 3, 1);
-    cout << "m1:" << endl;
-    cout << m1 << endl;
-    cout << "m2:" << endl;
-    cout << m2 << endl;
-
-    cout << "m = m + 2" << endl;
-    m = m + 2;
-    cout << "m:" << endl;
-    cout << m << endl;
-
-    cout << "m = m + 2" << endl;
-    m = m + 2;
-    cout << "m:" << endl;
-    cout << m << endl;
-
-    cout << "m = 2 + m" << endl;
-    m = 2 + m;
-    cout << "m:" << endl;
-    cout << m << endl;
-
-
-    cout << "m = m - mm" << endl;
-    m = m - mm;
-    cout << "m:" << endl;
-    cout << m << endl;
-
-    cout << "Calling m.transpose()" << endl;
-    m = m.transpose();
-    cout << "m:" << endl;
-    cout << m << endl;
-
-    cout << "Calling m += m" << endl;
-    m += m;
-    cout << "m:" << endl;
-    cout << m << endl;
-
-    cout << "Calling m += m" << endl;
-    m += m;
-    cout << "m:" << endl;
-    cout << m << endl;
-
-    cout << "Calling m += m2" << endl;
-    try
-    {
-        m += m2;
-        cout << "m:" << endl;
-        cout << m << endl;
-    }
-    catch(matrix_dimensions_wrong e)
-    {
-        cout << "Failed: matrices not compatible for operation" << endl;
-    }
-
-    Matrix mat(3, 2, 2);
-    cout << "mat:" << endl;
-    cout << mat << endl;
-
-    cout << "Calling m -= mat" << endl;
-    m -= mat;
-    cout << "m:" << endl;
-    cout << m << endl;
-
-    cout << "Calling m -= m2" << endl;
-    try
-    {
-        m -= m2;
-        cout << "m:" << endl;
-        cout << m << endl;
-    }
-    catch(matrix_dimensions_wrong e)
-    {
-        cout << "Failed: matrices not compatible for operation" << endl;
-    }
-
-    cout << "Fetching m(2,1), the element in row three, column one" << endl;
-    cout << "m(2,1): " << m(2,1) << endl;
-
-    cout << "Fetching m(3,6) element" << endl;
-    cout << "m(3,6): ";
-    try
-    {
-        cout << m(3,1) << endl;
-    }
-    catch(std::out_of_range outofrange)
-    {
-        cout << "Failed: " << outofrange.what() << endl;
-    }
-    cout << "m's number of rows: " << m.get_num_rows() << endl;
-    cout << "m's number of columns: " << m.get_num_cols() << endl;
-
-    cout << "m1 *= m2" << endl;
-    m1 *= m2;
-    cout << "m1:" << endl;
-    cout << m1 << endl;
-
-    Matrix test_mult3(9,7,2);
-    Matrix test_mult4(7,9,2);
-    cout << "test_mult3 *= test_mult4" << endl;
-    test_mult3 *= test_mult4;
-    cout << "test_mult3:" << endl;
-    cout << test_mult3 << endl;
-
-    Matrix n(2,3,1);
-    cout << "m:" << endl;
-    cout << m << endl;
-    cout << "n:" << endl;
-    cout << n << endl;
-    cout << "Test m *= n" << endl;
-    m *= n;
-    cout << "m:" << endl;
-    cout << m << endl;
 
     return 0;
+}
+
+Matrix istream_to_matrix( istream &in , vector<string> &airports )
+{
+    // Create a string of airports
+    vector<int> tmp;
+    string airports_;
+    string matrix_elements;
+
+    // Gets airport names from first line
+    if (getline(in, airports_))
+    {
+        istringstream iss(airports_);
+        string s;
+        while ( getline( iss, s, ' ' ) ) {
+            airports.push_back(s);
+        }
+    }
+
+    // Creates the matrix from the rest
+    Matrix flights(airports.size(), airports.size());
+
+    // Create a char as a char placeholder
+    string input;
+
+    while ( getline(in, input) ) {
+        istringstream iss(input);
+        string s1;
+        while ( getline( iss, s1, ' ' ) ) {
+            int input = atoi(s1.c_str());
+            tmp.push_back(input);
+        }
+    }
+    int k = 0;
+    for(unsigned int i = 0; i < airports.size(); i++)
+    {
+        for(unsigned int j = 0; j < airports.size(); j++)
+        {
+            flights(i,j) = tmp[k];
+            k++;
+        }
+    }
+
+    return flights;
+}
+
+// Initial menu interface
+void Interface()
+{
+    cout << "-----------------------------------------------" << endl;
+    cout << "\tWelcome to the Matrix AirPlanner!" << endl;
+    cout << "-----------------------------------------------" << endl;
+    cout << "Enter source and destination airports" << endl;
+    cout << "and maximum number of connection flights." << endl;
+    cout << "Type 'quit' to exit the program." << endl << endl;
+}
+
+// Counts number of connecting flights
+void count_connecting_flights(string source, string dest, string max_connect, Matrix flights)
+{
+    int max_conn;
+    max_conn = atoi(max_connect.c_str());
+
+    cout << max_conn << " results found" << endl << endl;
+    cout << "From airport: " << source << endl;
+    cout << "To airport: " << dest << endl;
+    cout << "With a max " << max_conn << " connecting flights" << endl;
+    cout << endl;
+}
+
+// Checks if airport specified exists
+bool check_airport_exist(string airport, vector<string> airports)
+{
+    for(unsigned int i = 0; i < airports.size(); i++)
+    {
+        if(airports[i] == airport)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+// Loops through functionality of program
+void main_menu(string input, vector<string> airports, Matrix flights)
+{
+    while(input != "quit" && input != "Quit" && input != "QUIT")
+    {
+        vector<string> input_args;
+        string tmp;
+        stringstream inp(input);
+
+        while (inp >> tmp)
+        {
+            input_args.push_back(tmp);
+        }
+
+        // Arguments need to be exactly three to count flights
+        if(input_args.size() == 3)
+        {
+            cout << endl;
+
+            // Airport names need to exists to check flights
+            if(check_airport_exist(input_args[0], airports) && check_airport_exist(input_args[1], airports))
+            {
+                count_connecting_flights(input_args[0], input_args[1], input_args[2], flights);
+            }
+            else
+            {
+                cout << "Airport name/s not found" << endl << endl;
+            }
+        }
+        // Arguments need to be exactly three
+        // Otherwise user is asked to input again
+        else
+        {
+            cout << "One or more argument/s missing! Try again:" << endl << endl;
+        }
+
+        // Next input for next loop
+        cout << "> ";
+        getline(cin, input);
+    }
+
+    // Outputs if user wants to quit program
+    cout << "M'kay, bye bye then :-(" << endl;
 }

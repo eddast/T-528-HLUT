@@ -224,6 +224,7 @@ Matrix& Matrix::operator*=(const Matrix& rhs)
     {
         throw matrix_dimensions_wrong();
     }
+
     Matrix matrix (num_rows_, rhs.num_cols_);
 
     for (int n = 0; n < num_rows_; n++) {
@@ -237,6 +238,7 @@ Matrix& Matrix::operator*=(const Matrix& rhs)
             matrix.data_[matrix.index(n,m)] = sum;
         }
 	}
+
     *this = matrix;
 
     return *this;
@@ -248,7 +250,10 @@ bool Matrix::operator==(const Matrix& rhs ) const
     // Matrices need to be the same size to be equal
     if((num_rows_ * num_cols_) != (rhs.num_rows_ * rhs.num_cols_))
     {
-        return false;
+        if(num_rows_ != rhs.num_rows_ || num_cols_ != rhs.num_cols_)
+        {
+            return false;
+        }
     }
     else
     {
