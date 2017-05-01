@@ -93,6 +93,8 @@ Matrix istream_to_matrix( istream &in , vector<string> &airports )
     // Create a char as a char placeholder
     string input;
 
+    // Gets integer value from each value in matrix
+    // Pushes it in vector
     while ( getline(in, input) ) {
         istringstream iss(input);
         string s1;
@@ -101,6 +103,8 @@ Matrix istream_to_matrix( istream &in , vector<string> &airports )
             tmp.push_back(input);
         }
     }
+
+    // Then pushes from vector to matrix
     int k = 0;
     for(unsigned int i = 0; i < airports.size(); i++)
     {
@@ -111,6 +115,7 @@ Matrix istream_to_matrix( istream &in , vector<string> &airports )
         }
     }
 
+    // returns matrix
     return flights;
 }
 
@@ -128,25 +133,33 @@ void Interface()
 // Counts number of connecting flights
 Matrix count_connecting_flights(string source, string dest, string max_connect, Matrix flights, vector<string> airports)
 {
+    // Casts command line argument to integer
+    // If not an integer, cast is computed as 0
     int max_conn;
     max_conn = atoi(max_connect.c_str());
 
-    int source_idx;
-    int dest_idx;
-
+    // Finding indexes of source and destination airports
+    // To later read from result matrix
+    int source_idx, dest_idx;
     for(unsigned int i = 0; i < airports.size(); i++)
     {
         if(airports[i] == source){source_idx = i; }
         if(airports[i] == dest){dest_idx = i; }
     }
 
-    cout << flights(dest_idx, source_idx) << " results found" << endl << endl;
+    // Calculating result matrix based on max_conn value
+    /// TODO
+    Matrix result = flights;
+
+    // Displaying result
+    cout << result(dest_idx, source_idx) << " results found" << endl << endl;
     cout << "From airport: " << source << endl;
     cout << "To airport: " << dest << endl;
     cout << "Maximum connecting flights: " << max_conn << endl;
     cout << endl;
 
-    return flights;
+    // Returns result matrix
+    return result;
 }
 
 // Checks if airport specified exists
