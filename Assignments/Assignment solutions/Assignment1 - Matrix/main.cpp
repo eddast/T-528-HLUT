@@ -17,7 +17,7 @@ void Interface();
 void main_menu(string input, vector<string> airports, Matrix flights);
 
 // "Logic"
-void count_connecting_flights(string source, string dest, string max_connect, Matrix flights);
+void count_connecting_flights(string source, string dest, string max_connect, Matrix flights, vector<string> airports);
 bool check_airport_exist(string airport, vector<string> airports);
 Matrix istream_to_matrix( istream &in , vector<string> &airports );
 
@@ -126,12 +126,29 @@ void Interface()
 }
 
 // Counts number of connecting flights
-void count_connecting_flights(string source, string dest, string max_connect, Matrix flights)
+void count_connecting_flights(string source, string dest, string max_connect, Matrix flights, vector<string> airports)
 {
     int max_conn;
     max_conn = atoi(max_connect.c_str());
 
-    cout << max_conn << " results found" << endl << endl;
+    int source_idx;
+    int dest_idx;
+
+    for(unsigned int i = 0; i < airports.size(); i++)
+    {
+        if(airports[i] == source)
+        {
+            source_idx = i;
+        }
+        if(airports[i] == dest)
+        {
+            dest_idx = i;
+        }
+    }
+
+    cout << flights << endl;
+    cout << "reading (" << source_idx << "," << dest_idx << ")" << endl;
+    cout << flights(source_idx, dest_idx) << " results found" << endl << endl;
     cout << "From airport: " << source << endl;
     cout << "To airport: " << dest << endl;
     cout << "With a max " << max_conn << " connecting flights" << endl;
@@ -173,7 +190,7 @@ void main_menu(string input, vector<string> airports, Matrix flights)
             // Airport names need to exists to check flights
             if(check_airport_exist(input_args[0], airports) && check_airport_exist(input_args[1], airports))
             {
-                count_connecting_flights(input_args[0], input_args[1], input_args[2], flights);
+                count_connecting_flights(input_args[0], input_args[1], input_args[2], flights, airports);
             }
             else
             {
