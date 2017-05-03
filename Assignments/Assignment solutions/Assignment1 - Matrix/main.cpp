@@ -173,14 +173,14 @@ Matrix count_connecting_flights(string source, string dest, string max_connect, 
     Matrix temp_matrix = flights;
 	for (int i = 0; i < max_conn; i++) {
         for (int j = i; j < max_conn; j++) {
-            temp_matrix *= temp_matrix;
+            temp_matrix = temp_matrix * flights;
         }
         result += temp_matrix;
         temp_matrix = flights;
     }
 
     // Displaying result
-    cout << result(dest_idx, source_idx) << " results found" << endl << endl;
+    cout << result(source_idx, dest_idx) << " results found" << endl << endl;
     cout << "From airport: " << source << endl;
     cout << "To airport: " << dest << endl;
     cout << "Maximum connecting flights: " << max_conn << endl;
