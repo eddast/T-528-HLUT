@@ -12,6 +12,7 @@
 
 using namespace std;
 
+// Gets random tiles from alphabet
 list<char> getRandomTiles( int numTiles, int rseed )
 {
     static string alphabet( "abcdefghijklmnopqrstuvwxyz" );
@@ -27,9 +28,7 @@ list<char> getRandomTiles( int numTiles, int rseed )
     return tiles;
 }
 
-//
 // Read dictionary in from file.
-//
 void readDictionary( string fileName, set<string>& dict )
 {
     // Defines ifstream from file name string provided
@@ -44,17 +43,20 @@ void readDictionary( string fileName, set<string>& dict )
     }
     else
     {
+        // Program terminates if file is invalid
         cout << "Could not open provided word bank" << endl;
         cout << "Program TERMINATING!" << endl;
         exit(1);
     }
 }
 
-//
 // Returns true if word is legitimately constructed from the tiles, otherwise false.
-//
 bool legitimate( string word, list<char> tiles )
 {
+    // Iterates through word. If character is found
+    // function carries on and erases character from tile
+    // (to avoid interpreting duplicates from tiles)
+    // otherwise returns false
     list<char>::iterator find_it;
     for(unsigned int i = 0; i < word.size(); i++)
     {
@@ -69,6 +71,7 @@ bool legitimate( string word, list<char> tiles )
     return true;
 }
 
+// Returns true if word is found in dictionary, else false
 bool in_dictionary( const string& word, const set<string>& dictionary )
 {
     return find(dictionary.begin(), dictionary.end(), word) != dictionary.end();
@@ -76,6 +79,8 @@ bool in_dictionary( const string& word, const set<string>& dictionary )
 
 int main(int argc, char** argv)
 {
+    // Setting random seed
+    // Setting dictionary file
     int rseed = 0;
     if(argc > 1)
         rseed = atoi(argv[1]);
@@ -83,11 +88,15 @@ int main(int argc, char** argv)
     if(argc > 2)
 		dictionaryFile = argv[2];
 
+    // Interface starts, read words into set from
+    // dictionary provided
 	cout << "Welcome to word-puzzle!\n";
 	cout << "Reading dictionary ... ";
 	set<string> dictionary;
 	readDictionary( dictionaryFile, dictionary );
 	cout << "size = " << dictionary.size() << '\n';
+
+	// Setting tiles for user
 	cout << "Number of tiles to use: ";
 	int numTiles = 0;
 	cin >> numTiles;
@@ -100,6 +109,8 @@ int main(int argc, char** argv)
     }
 	cout << '\n';
 
+	// Set of correct words and map of inputted words
+	// Map stores word and number of attempts per word
 	set<string> correctWords;
 	map<string, int> inputtedWords;
 	int score = 0;
@@ -110,10 +121,15 @@ int main(int argc, char** argv)
         cout << word << '\n';
         if(inputtedWords.find(word) != inputtedWords.end())
         {
+            // If word is already inputted user gets
+            // "already found" feedback if word was legit
+            // otherwise no feedback
             if(legitimate(word, tiles))
             {
                 cout << "Word already found." << endl;
             }
+
+            // Attempts in map increase by one per new attempt
             map<string, int>::iterator el = inputtedWords.find(word);
             el->second++;
         }
@@ -121,27 +137,40 @@ int main(int argc, char** argv)
         {
             if( in_dictionary(word, dictionary) )
             {
+                // If word is in dictionary and legitimate
+                // Score is increased and word is added to correct words
                 score++;
                 cout << "Good job! Score = " << score << endl;
                 correctWords.insert(word);
+
+                // Word added to inputted words
                 pair<string, int> word_attempt(word, 1);
                 inputtedWords.insert(word_attempt);
             }
             else
             {
+                // Otherwise if word is legit but not in word bank
+                // User gets alerted that word is not in word bank
                 cout << "Word not found in dictionary." << endl;
+
+                // Word added to inputted words
                 pair<string, int> word_attempt(word, 1);
                 inputtedWords.insert(word_attempt);
             }
         }
         else
         {
+            // User alerted that word is not legit
             cout << "Word not legitimately constructed from tiles." << endl;
+
+            // Word added to inputted words
             pair<string, int> word_attempt(word, 1);
             inputtedWords.insert(word_attempt);
         }
 		cout << "Enter word ('*' to exit): ";
 	}
+
+	// Displaying results and score
 	cout << "\nWords found:\n";
     for(auto el : correctWords)
     {
@@ -153,8 +182,4 @@ int main(int argc, char** argv)
     {
         cout << "\t" << get<0>(el) << ":" << get<1>(el) << endl;
     }
-	//
-	// ==> Implement, output correct words and attempts.
-	//     Make sure that the output is formatted exactly as expected (see description).
-    //
 }
