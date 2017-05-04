@@ -119,26 +119,31 @@ int main(int argc, char** argv)
     while ( cin >> word ) {
         if ( word == "*" ) break;
         cout << word << '\n';
-        if(inputtedWords.find(word) != inputtedWords.end())
-        {
-            // If word is already inputted user gets
-            // "already found" feedback if word was legit
-            // otherwise no feedback
-            if(legitimate(word, tiles))
-            {
-                cout << "Word already found." << endl;
-            }
 
-            // Attempts in map increase by one per new attempt
-            map<string, int>::iterator el = inputtedWords.find(word);
-            el->second++;
-        }
+        // If word is legitimately constructed from tiles
+        // Program goes on to analyze if it exists in dictionary
         if(legitimate(word, tiles))
         {
-            if( in_dictionary(word, dictionary) )
+            // If word has already been inputted
+            if(inputtedWords.find(word) != inputtedWords.end())
             {
-                // If word is in dictionary and legitimate
-                // Score is increased and word is added to correct words
+                // user gets "already found" feedback if word was in dictionary
+                // otherwise no feedback (according to Mooshak at least)
+                if(in_dictionary(word, dictionary))
+                {
+                    cout << "Word already found." << endl;
+                }
+
+                // Attempts in map are increased by one
+                // per new attempt for word
+                map<string, int>::iterator el = inputtedWords.find(word);
+                el->second++;
+            }
+
+            // If word is in dictionary and legitimate
+            // Score is increased and word is added to correct words
+            else if( in_dictionary(word, dictionary) )
+            {
                 score++;
                 cout << "Good job! Score = " << score << endl;
                 correctWords.insert(word);
@@ -147,10 +152,11 @@ int main(int argc, char** argv)
                 pair<string, int> word_attempt(word, 1);
                 inputtedWords.insert(word_attempt);
             }
+
+            // Otherwise if word is legit but not in dictionary
+            // User gets alerted that word is not in word bank
             else
             {
-                // Otherwise if word is legit but not in word bank
-                // User gets alerted that word is not in word bank
                 cout << "Word not found in dictionary." << endl;
 
                 // Word added to inputted words
@@ -158,19 +164,30 @@ int main(int argc, char** argv)
                 inputtedWords.insert(word_attempt);
             }
         }
+
+        // If word is not legitimate, user is alerted
+        // Word checked for in inputted words map
         else
         {
-            // User alerted that word is not legit
             cout << "Word not legitimately constructed from tiles." << endl;
 
-            // Word added to inputted words
-            pair<string, int> word_attempt(word, 1);
-            inputtedWords.insert(word_attempt);
+            // If entry already exists in inputted words, attempts are increased
+            if(inputtedWords.find(word) != inputtedWords.end())
+            {
+                map<string, int>::iterator el = inputtedWords.find(word);
+                el->second++;
+            }
+            // Otherwise entry is added in inputted words
+            else
+            {
+                pair<string, int> word_attempt(word, 1);
+                inputtedWords.insert(word_attempt);
+            }
         }
 		cout << "Enter word ('*' to exit): ";
 	}
 
-	// Displaying results and score
+	// Displaying results of game and score
 	cout << "\nWords found:\n";
     for(auto el : correctWords)
     {
