@@ -1,0 +1,24 @@
+# depslib dependency file v1.0
+1493905214 source:c:\users\edda steinunn\documents\hlutbundin c++\labs\lab solutions\wordbank\main.cpp
+	<iostream>
+	<fstream>
+	<cstdlib>
+	<ctime>
+	<string>
+	<set>
+	<list>
+	<algorithm>
+	<random>
+
+1493907755 source:c:\users\edda steinunn\documents\hlutbundin c++\labs\lab solutions\lab6 - stl\wordbank\main.cpp
+	<iostream>
+	<fstream>
+	<cstdlib>
+	<ctime>
+	<string>
+	<set>
+	<list>
+	<map>
+	<algorithm>
+	<random>
+
