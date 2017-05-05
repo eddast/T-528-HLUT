@@ -1,0 +1,8 @@
+# depslib dependency file v1.0
+1493995884 source:c:\users\edda steinunn\documents\hlutbundin c++\labs\lab solutions\lab7 - templates\main.cpp
+	<iostream>
+	<mystack.h>
+
+1493993575 c:\users\edda steinunn\documents\hlutbundin c++\labs\lab solutions\lab7 - templates\include\mystack.h
+	<deque>
+
